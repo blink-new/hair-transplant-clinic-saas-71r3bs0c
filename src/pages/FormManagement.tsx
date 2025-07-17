@@ -69,35 +69,7 @@ export default function FormManagement() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const unsubscribe = blink.auth.onAuthStateChanged((state) => {
-      if (state.user) {
-        setUser(state.user)
-      } else if (!state.isLoading) {
-        navigate('/auth')
-      }
-      setIsLoading(state.isLoading)
-    })
-
-    return unsubscribe
-  }, [navigate])
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!user) {
-    return null
-  }
-
+  
   // Mock data - in real app, this would come from API
   const [templates, setTemplates] = useState<FormTemplate[]>([
     {
@@ -160,6 +132,34 @@ export default function FormManagement() {
       }
     }
   ])
+
+  useEffect(() => {
+    const unsubscribe = blink.auth.onAuthStateChanged((state) => {
+      if (state.user) {
+        setUser(state.user)
+      } else if (!state.isLoading) {
+        navigate('/auth')
+      }
+      setIsLoading(state.isLoading)
+    })
+
+    return unsubscribe
+  }, [navigate])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null
+  }
 
   const stats = {
     totalForms: templates.length,
